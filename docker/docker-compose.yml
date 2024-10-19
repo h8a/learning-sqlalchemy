@@ -1,0 +1,27 @@
+services:
+  db-postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASS}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d ${DB_NAME}'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  exercise:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    environment:
+      - EXERCISE=${EXERCISE}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_HOST=db-postgres
+    depends_on:
+      db-postgres:
+        condition: service_healthy
