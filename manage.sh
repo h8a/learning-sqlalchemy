@@ -30,8 +30,7 @@ exercise() {
   docker compose -p $APP_NAME \
     -f ./docker/docker-compose.yml \
     --env-file $ENV_FILE \
-    up --build \
-    --abort-on-container-exit
+    up --build
 }
 
 install() {
@@ -66,6 +65,9 @@ EXAMPLES:
 
   3.- Execute example connection
       ./manage.sh connection
+
+  4.- Execute example models
+      ./manage.sh models
 """
 }
 
@@ -76,7 +78,7 @@ case $1 in
 "examples")
   list_examples
   ;;
-"connection")
+"connection" | "models")
   EXERCISE=$1
   exercise
   ;;
