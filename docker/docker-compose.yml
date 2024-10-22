@@ -18,10 +18,23 @@ services:
       context: ../
       dockerfile: ./docker/Dockerfile
     environment:
+      - DEBUG=${DEBUG:-False}
       - EXERCISE=${EXERCISE}
       - DB_NAME=${DB_NAME}
       - DB_PASS=${DB_PASS}
       - DB_HOST=db-postgres
+    depends_on:
+      db-postgres:
+        condition: service_healthy
+
+  pgadmin4:
+    image: elestio/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@email.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "8080:8080"
     depends_on:
       db-postgres:
         condition: service_healthy
