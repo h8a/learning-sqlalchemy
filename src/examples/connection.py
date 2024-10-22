@@ -20,7 +20,8 @@ async_engine = create_async_engine(
         host=os.getenv("DB_HOST"),
         port=5432,
         database=os.getenv("DB_NAME"),
-    )
+    ),
+    echo=bool(os.getenv("DEBUG", False)),
 )
 
 async_session = async_scoped_session(
